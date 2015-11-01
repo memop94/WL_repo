@@ -43,6 +43,7 @@
 
 #include "stm_init.h"
 
+#include "external_interrupts.h"
 /**********************  Function Prototype here *************************/
 
 void sys_init_fnc (void);

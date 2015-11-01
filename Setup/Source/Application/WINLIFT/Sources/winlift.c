@@ -10,7 +10,7 @@
 //pcr[10] open
 //pcr[11] close
 //switches pcr[66(close)-67(open)]
-
+#define SWITCH_INTERR_FLAG SIU.ISR.B.EIF21
 //Lifts the window
 void closeWindow() //not totally implemented
 {	
@@ -73,10 +73,19 @@ T_UBYTE validateButtonPress(){}
 //Stops and lowers the window, and block the inputs
 void antipinch()//not totally implemented
 {
-	if(validate())
+	if(SWITCH_INTERR_FLAG) // if the 3rd switch is pressed
 	{
-		openWindow(); 
-		blockButtons();
+		if(e_wState == LIFTING) //First it checks the state 
+		{
+			if(validate())	// Validates that press time > 10 ms
+			{
+				openWindow(); 
+				blockButtons();
+				e_wState = OPEN; //The state is updated
+			}
+		}
+		
+		SWITCH_INTERR_FLAG = 1; //Clears interruption flag
 	}
 }
 

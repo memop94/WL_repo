@@ -1,7 +1,7 @@
 /*
  *      File        : WL_GPIO.h
  *      Created on  : Oct 20, 2015
- *      Authors     : Luis Fernando Alvarez Guerrero, Luis Armando Garcia Valdovinos
+ *      Authors     : Oscar Miranda, Guillermo Ramirez
  *      Description : Window Lifter GPIO Intialization
  */
 

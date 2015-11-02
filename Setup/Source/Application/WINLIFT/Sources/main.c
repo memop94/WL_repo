@@ -12,11 +12,13 @@
 
 int main(void) {
 	
-	volatile int i = 0;
-	volatile int k = 0;
+	volatile T_ULONG lul_InfLoop = 0;
+	volatile T_ULONG lul_Validate = 0;
+	volatile T_ULONG lul_ValidateUp = 0;
+	volatile T_ULONG lul_ValidateDw = 0;
 	
-	uint16_t su;
-	uint16_t sd;
+	T_UWORD luw_SwDwState;
+	T_UWORD luw_SwUpState;
 	
 	WL_initModesAndClock();
 	WL_EIRQ_Init();
@@ -24,33 +26,104 @@ int main(void) {
 	WL_GPIO_Init();
 	init_ext_ints();
 	init_PIT();
+	
 	asm(" wrteei 1");
 
-   
-/*	INTC_InstallINTCInterruptHandler( WL_CheckValid,30,1); /* vector 30 for STM[0] */
-	INTC_InstallINTCInterruptHandler(WL_A_Pinch,EIRQ_2,1); /* vector 32 for STM[2] */
+   	INTC_InstallINTCInterruptHandler(WL_A_Pinch,EIRQ_2,1); /* vector 32 for STM[2] */
 	INTC.CPR.R = 0;
   	  
 
   /* Loop forever */
   for (;;) {
+	  /*------------------------------*/
+	  luw_SwDwState = GPIO_GetState(SW_DOWN);
 	  
-	  sd = GPIO_GetState(SW_DOWN);
-	  while (sd == 1){
-		  WL_WinMDw();
-		  sd = GPIO_GetState(SW_DOWN);
+	  if (luw_SwDwState == 1)
+	  {
+		  lul_Validate = WL_CheckValid();
+		  if (lul_Validate == 1)
+		  {
+			  lul_ValidateDw = WL_CheckAutoManualDw();
+		  }
+		  else
+		  {
+			  /*DO NOTHING*/
+		  }
+	  }
+	  else
+	  {
+		  /*DO NOTHING*/
+	  }
+	  while (luw_SwDwState == 1){
+		  
+		  if (lul_ValidateDw == 1)
+		  {
+			  WL_WinMDw();
+		  }
+		  else
+		  {
+			  /*DO NOTHING*/
+		  }
+		  
+		  if (lul_ValidateDw == 0)
+		  {
+			  WL_WinADw();
+		  }
+		  else
+		  {
+			  /*DO NOTHING*/
+		  }
+		  
+		  luw_SwDwState = GPIO_GetState(SW_DOWN);
 	  }
 	  
-	  su = GPIO_GetState(SW_UP);
-	  while (su == 1){
-		  WL_WinAUp();
-		  su = GPIO_GetState(SW_UP);
+	  /*------------------------------*/
+	  luw_SwUpState = GPIO_GetState(SW_UP);
+	  
+	  if (luw_SwUpState == 1)
+	  {
+		  lul_Validate = WL_CheckValid();
+		  if (lul_Validate == 1)
+		  {
+			  lul_ValidateUp = WL_CheckAutoManualUp();
+		  }
+		  else
+		  {
+			  /*DO NOTHING*/
+		  }
+	  }
+	  else
+	  {
+		  /*DO NOTHING*/
+	  }
+	  
+	  while (luw_SwUpState == 1){
+		  
+		  if (lul_ValidateUp == 1)
+		  {
+			  WL_WinMUp();
+		  }
+		  else
+		  {
+			  /*DO NOTHING*/
+		  }
+		  
+		  if (lul_ValidateUp == 0)
+		  {
+			  WL_WinAUp();
+		  }
+		  else
+		  {
+			  /*DO NOTHING*/
+		  }
+		  
+		  luw_SwUpState = GPIO_GetState(SW_UP);
 	  }
 	  
 	  GPIO_SetState(LED_DOWN, 0);
 	  GPIO_SetState(LED_UP, 0);
 	  
-	  i++;
+	  lul_InfLoop++;
   }
 }
 

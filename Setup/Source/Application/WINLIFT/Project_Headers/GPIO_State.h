@@ -2,7 +2,7 @@
  * GPIO_State.h
  *
  *  Created on: Nov 1, 2015
- *      Author: GuillermoFrancisco
+ *      Author: Oscar Miranda, Guillermo Ramirez
  */
 
 #ifndef GPIO_STATE_H_

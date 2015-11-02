@@ -1,7 +1,7 @@
 /*
  *      File        : driver_channel_MPC5606B.h
  *      Created on  : Oct 8, 2015
- *      Author      : Luis Fernando Alvarez Guerrero
+ *      Author      : Oscar Miranda, Guillermo Ramirez
  *      Description : Enumarated Channels with Description
  */
 

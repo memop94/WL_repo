@@ -1,7 +1,7 @@
 /*
  *      File        : WL_EIRQ.h
  *      Created on  : Oct 22, 2015
- *      Authors     : Luis Fernando Alvarez Guerrero, Luis Armando Garcia Valdovinos
+ *      Authors     : Oscar Miranda, Guillermo Ramirez
  *      Description : Window Lifter EIRQ Intialization and functions
  */
 

@@ -8,11 +8,13 @@
 #include "WL_STM.h"
 #include "GPIO_State.h"
 #define SWITCH_INTERR_FLAG SIU.ISR.B.EIF21
+#define t10ms 0x9C400
+#define t500ms 0x1E84800
 
-enum windowState {OPEN, CLOSE, LIFTING} e_wstate; 
+enum E_WINDOWSTATE {OPEN, CLOSE, LIFTING} e_wstate; 
 
-volatile int j = 0;
-int A_P_Con = 1;
+volatile T_SWORD WindowPos = 0;
+int AntiPinchCon = 1;
 
 void WL_STM_init(void)
 {
@@ -32,7 +34,7 @@ void WL_STM_init(void)
     STM.CR.B.TEN        = 0x1;       /* Enable System Timer Module                              */
 }
 
-void WL_CheckValid(void)
+T_ULONG WL_CheckValid(void)
 {  /* ------------------------------------------------------------------------
 	*  Name                 :  WL_CheckValid  
 	*  Description          :  Check if counter has reached 10msec
@@ -40,53 +42,90 @@ void WL_CheckValid(void)
 	*  Return               :  void
 	*  -----------------------------------------------------------------------
 	*/
-	if (STM.CH[0].CIR.B.CIF)
+	
+	static T_ULONG PressTime = 0;
+	static T_UBYTE valid = 0;
+	
+	PressTime = STM.CNT.R;
+	valid = 0;
+	
+	while (valid == 0)
 	{
-		LED_TOGGLE(68);
-		STM.CH[0].CIR.B.CIF = 1;	/* Clear interrupt flag */
-	}
-}
-
-int WL_CheckAutoManualUp(void)
-{  /* ------------------------------------------------------------------------
-	*  Name                 :  WL_CheckAutoManual
-	*  Description          :  Check if the movement will be Auto or Manual
-	*  Parameters           :  void 
-	*  Return               :  void
-	*  -----------------------------------------------------------------------
-	*/
-	STM.CNT.R = 0;
-	STM.CH[1].CIR.B.CIF = 1;	/* Clear interrupt flag */
-	STM.CNT.R = 0; 				/* Reset counter */
-	return 0;
-}
-
-int WL_CheckAutoManualDw(void)
-{  /* ------------------------------------------------------------------------
-	*  Name                 :  WL_CheckAutoManual
-	*  Description          :  Check if the movement will be Auto or Manual
-	*  Parameters           :  void 
-	*  Return               :  void
-	*  -----------------------------------------------------------------------
-	*/
-	uint16_t sd;
-		
-	sd = GPIO_GetState(SW_DOWN);
-	
-	STM.CNT.R = 0;
-	
-	while (sd == 1){
-		if (STM.CH[1].CIR.B.CIF)
+		if (PressTime >= t10ms)
 		{
-			STM.CNT.R = 0; 				/*Reset counter*/
-			WL_WinMDw();
-			sd = 2;
+			
+			STM.CNT.R = 0;
+			valid = 1;
+			
 		}
-		STM.CH[1].CIR.B.CIF = 1;	/* Clear interrupt flag */
-		sd = GPIO_GetState(SW_DOWN);
 	}
-	  
-	return 0;
+	return valid;
+}
+
+T_ULONG WL_CheckAutoManualUp(void)
+{  /* ------------------------------------------------------------------------
+	*  Name                 :  WL_CheckAutoManual
+	*  Description          :  Check if the movement will be Auto or Manual
+	*  Parameters           :  void 
+	*  Return               :  void
+	*  -----------------------------------------------------------------------
+	*/
+	static T_ULONG PressTime = 0;
+	static T_UBYTE valid = 0;
+	
+	STM.CNT.R = 0; 				/* Reset counter */
+	
+	PressTime = STM.CNT.R;
+	
+	valid = 0;
+	
+	while (GPIO_GetState(SW_UP) && valid == 0)
+	{
+		
+		PressTime = STM.CNT.R;
+		
+		if (PressTime >= t500ms)
+		{
+			
+			STM.CNT.R = 0;
+			valid = 1;
+			
+		}
+		else
+		{
+		  /*DO NOTHING*/
+		}
+	}
+	return valid;
+}
+
+T_ULONG WL_CheckAutoManualDw(void)
+{  /* ------------------------------------------------------------------------
+	*  Name                 :  WL_CheckAutoManual
+	*  Description          :  Check if the movement will be Auto or Manual
+	*  Parameters           :  void 
+	*  Return               :  void
+	*  -----------------------------------------------------------------------
+	*/
+	static T_ULONG PressTime = 0;
+	static T_UBYTE valid = 0;
+	STM.CNT.R = 0; 				/* Reset counter */
+	PressTime = STM.CNT.R;
+	valid = 0;
+	while (GPIO_GetState(SW_DOWN) && valid == 0)
+	{
+		PressTime = STM.CNT.R;
+		if (PressTime >= 0x1E84800)
+		{
+			STM.CNT.R = 0;
+			valid = 1;
+		}
+		else
+		{
+		  /*DO NOTHING*/
+		}
+	}
+	return valid;
 }
 
 void WL_WinMUp(void)
@@ -100,15 +139,25 @@ void WL_WinMUp(void)
 
 	if (STM.CH[2].CIR.B.CIF)
 	{
-		e_wstate = LIFTING;
-		GPIO_SetState(LED_BAR_0 + j, 1);
+		GPIO_SetState(LED_BAR_0 + WindowPos, 1);
 		GPIO_SetState(LED_UP, 1);
 		STM.CH[2].CIR.B.CIF = 1;	/* Clear interrupt flag */
 		STM.CNT.R = 0; 				/*Reset counter*/
-		j++;
-		if (j > 9){
-			j = 9;
+		WindowPos++;
+		e_wstate = LIFTING;	
+		if (WindowPos > 9)
+		{
+			WindowPos = 9;
+			e_wstate = CLOSE;
 		}
+		else
+		{	
+			/*DO NOTHING*/
+		}
+	}
+	else
+	{
+		/*DO NOTHING*/
 	}
 	e_wstate = CLOSE;
 }
@@ -121,17 +170,22 @@ void WL_WinAUp(void)
 	*  Return               :  void
 	*  -----------------------------------------------------------------------
 	*/
-	A_P_Con = 1;
-	while(j <= 9 && A_P_Con == 1){
+	AntiPinchCon = 1;
+	while(WindowPos <= 9 && AntiPinchCon == 1)
+	{
 		if (STM.CH[2].CIR.B.CIF)
 		{
-			e_wstate = LIFTING;
-			GPIO_SetState(LED_BAR_0 + j, 1);
+			GPIO_SetState(LED_BAR_0 + WindowPos, 1);
 			GPIO_SetState(LED_UP, 1);
 			GPIO_SetState(LED_DOWN, 0);
 			STM.CH[2].CIR.B.CIF = 1;	/* Clear interrupt flag */
 			STM.CNT.R = 0; 				/*Reset counter*/
-			j++;
+			WindowPos++;
+			e_wstate = LIFTING;
+		}
+		else
+		{
+		  /*DO NOTHING*/
 		}
 	}
 	e_wstate = CLOSE;
@@ -148,14 +202,23 @@ void WL_WinMDw(void)
 
 	if (STM.CH[2].CIR.B.CIF)
 	{
-		GPIO_SetState(LED_DOWN, 1);
-		GPIO_SetState(LED_BAR_0 + j, 0);
+		if (WindowPos <= 0)
+		{
+			WindowPos = 0;
+			GPIO_SetState(LED_DOWN, 0);
+		}
+		else
+		{
+			GPIO_SetState(LED_DOWN, 1);
+		}
+		GPIO_SetState(LED_BAR_0 + WindowPos, 0);
 		STM.CH[2].CIR.B.CIF = 1;	/* Clear interrupt flag */
 		STM.CNT.R = 0; 				/*Reset counter*/
-		j--;
-		if (j < 0){
-			j = 0;
-		}
+		WindowPos--;
+	}
+	else
+	{
+	  /*DO NOTHING*/
 	}
 }
 
@@ -168,15 +231,20 @@ void WL_WinADw(void)
 	*  -----------------------------------------------------------------------
 	*/
 
-	while(j >= 0){
+	while(WindowPos >= 0)
+	{
 		if (STM.CH[2].CIR.B.CIF)
 		{
-			GPIO_SetState(LED_BAR_0 + j, 0);
+			GPIO_SetState(LED_BAR_0 + WindowPos, 0);
 			GPIO_SetState(LED_DOWN, 1);
 			GPIO_SetState(LED_UP, 0);
 			STM.CH[2].CIR.B.CIF = 1;	/* Clear interrupt flag */
 			STM.CNT.R = 0; 				/*Reset counter*/
-			j--;
+			WindowPos--;
+		}
+		else
+		{
+		  /*DO NOTHING*/
 		}
 	}
 }
@@ -189,24 +257,35 @@ void WL_A_Pinch(void)
 	*  Return               :  void
 	*  -----------------------------------------------------------------------
 	*/
-	if (e_wstate == LIFTING){
-		while (SWITCH_INTERR_FLAG){
-			while(j >= 0){
+	if (e_wstate == LIFTING)
+	{
+		while (SWITCH_INTERR_FLAG)
+		{
+			while(WindowPos >= 0)
+			{
 				if (STM.CH[2].CIR.B.CIF)
 				{
-					GPIO_SetState(LED_BAR_0 + j, 0);
+					GPIO_SetState(LED_BAR_0 + WindowPos, 0);
 					GPIO_SetState(LED_DOWN, 1);
 					GPIO_SetState(LED_UP, 0);
 					STM.CH[2].CIR.B.CIF = 1;	/* Clear interrupt flag */
 					SWITCH_INTERR_FLAG = 1;
 					STM.CNT.R = 0; 				/*Reset counter*/
-					A_P_Con = 2;
-					j--;
+					AntiPinchCon = 2;
+					WindowPos--;
+				}
+				else
+				{
+				  /*DO NOTHING*/
 				}
 			}
-			e_wstate == OPEN;
+			e_wstate = OPEN;
 			blockButtons();
 		}
+	}
+	else
+	{
+	  /*DO NOTHING*/
 	}
 	SWITCH_INTERR_FLAG = 1;
 }

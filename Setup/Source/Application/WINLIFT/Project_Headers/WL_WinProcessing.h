@@ -2,7 +2,7 @@
  * WL_WinProcessing.h
  *
  *  Created on: Nov 1, 2015
- *      Author: x
+ *      Author: Oscar Miranda, Guillermo Ramirez
  */
 #include "MPC5606B.h"
 #include "stdtypedef.h"

@@ -1,7 +1,7 @@
 /*
  *      File        : WL_STM.h
  *      Created on  : Oct 26, 2015
- *      Authors     : Luis Fernando Alvarez Guerrero, Luis Armando Garcia Valdovinos
+ *      Authors     : Oscar Miranda, Guillermo Ramirez
  *      Description : Window Lifter STM Intialization and Functions
  */
 
@@ -14,12 +14,13 @@
 #include "IntcInterrupts.h"
 #include "WL_FUNCTIONS.h"
 #include "WL_WinProcessing.h"
-void WL_STM_init    (void);
 
-void WL_CheckValid(void);
+void WL_STM_init(void);
 
-int WL_CheckAutoManualUp(void);
-int WL_CheckAutoManualDw(void);
+T_ULONG WL_CheckValid(void);
+
+T_ULONG WL_CheckAutoManualUp(void);
+T_ULONG WL_CheckAutoManualDw(void);
 
 void WL_WinMUp(void);
 void WL_WinAUp(void);

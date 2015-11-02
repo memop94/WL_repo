@@ -2,7 +2,7 @@
  * external_interrupts.h
  *
  *  Created on: Nov 1, 2015
- *      Author: x
+ *      Author: Oscar Miranda, Guillermo Ramirez
  */
 
 #ifndef EXTERNAL_INTERRUPTS_H_

@@ -1,7 +1,7 @@
 /*
  *      File        : WL_SYS_INIT.h
  *      Created on  : Oct 20, 2015
- *      Author      : Luis Fernando Alvarez Guerrero
+ *      Author      : Oscar Miranda, Guillermo Ramirez
  *      Description : Window Lifter System Initialization
  */
 

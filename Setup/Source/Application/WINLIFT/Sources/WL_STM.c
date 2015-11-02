@@ -216,4 +216,5 @@ void WL_A_Pinch(void)
 			}
 		}
 	}
+	blockButtons();
 }

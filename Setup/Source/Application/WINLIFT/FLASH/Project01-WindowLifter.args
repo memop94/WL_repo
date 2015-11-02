@@ -5,6 +5,7 @@
 "./Sources/main_c.obj"
 "./Sources/ivor_branch_table_c.obj"
 "./Sources/external_interrupts_c.obj"
+"./Sources/WL_WinProcessing_c.obj"
 "./Sources/WL_SYS_INIT_c.obj"
 "./Sources/WL_STM_c.obj"
 "./Sources/WL_GPIO_c.obj"

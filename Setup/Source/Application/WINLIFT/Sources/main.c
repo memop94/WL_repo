@@ -8,7 +8,7 @@
 #include "IntcInterrupts.h"
 #include "GPIO_State.h"
 #include "external_interrupts.h"
-
+#include "WL_WinProcessing.h"
 
 int main(void) {
 	
@@ -23,7 +23,7 @@ int main(void) {
 	WL_STM_init();
 	WL_GPIO_Init();
 	init_ext_ints();
-	
+	init_PIT();
 	asm(" wrteei 1");
 
    

@@ -13,8 +13,7 @@
 #include "stdtypedef.h"
 #include "IntcInterrupts.h"
 #include "WL_FUNCTIONS.h"
-
-
+#include "WL_WinProcessing.h"
 void WL_STM_init    (void);
 
 void WL_CheckValid(void);

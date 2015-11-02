@@ -37,13 +37,13 @@ int main(void) {
 	  
 	  sd = GPIO_GetState(SW_DOWN);
 	  while (sd == 1){
-		  WL_WinADw();
+		  WL_WinMDw();
 		  sd = GPIO_GetState(SW_DOWN);
 	  }
 	  
 	  su = GPIO_GetState(SW_UP);
 	  while (su == 1){
-		  WL_WinAUp();
+		  WL_WinMUp();
 		  su = GPIO_GetState(SW_UP);
 	  }
 	  

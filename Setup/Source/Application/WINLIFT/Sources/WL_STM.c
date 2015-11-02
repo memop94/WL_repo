@@ -15,6 +15,7 @@ vuint32_t xd;
 uint16_t su = 1;
 int mode = 0;
 int A_P_Con = 1;
+enum windowState {CLOSED, OPEN, LIFTING }e_wState;
 
 void WL_STM_init(void)
 {
@@ -118,12 +119,13 @@ void WL_WinMUp(void)
 		GPIO_SetState(LED_UP, 1);
 		STM.CH[2].CIR.B.CIF = 1;	/* Clear interrupt flag */
 		STM.CNT.R = 0; 				/*Reset counter*/
+		e_wState = LIFTING;
 		j++;
 		if (j > 9){
 			j = 9;
 		}
 	}
-	mode = 0;
+	e_wState = OPEN;
 }
 
 void WL_WinAUp(void)
@@ -134,6 +136,7 @@ void WL_WinAUp(void)
 	*  Return               :  void
 	*  -----------------------------------------------------------------------
 	*/
+	e_wState = LIFTING;
 	A_P_Con = 1;
 	while(j <= 9 && A_P_Con == 1){
 		if (STM.CH[2].CIR.B.CIF)
@@ -146,7 +149,7 @@ void WL_WinAUp(void)
 			j++;
 		}
 	}
-	mode = 0;
+	e_wState = OPEN;
 }
 
 void WL_WinMDw(void)
@@ -201,20 +204,23 @@ void WL_A_Pinch(void)
 	*  Return               :  void
 	*  -----------------------------------------------------------------------
 	*/
-	while (SWITCH_INTERR_FLAG){
-		while(j >= 0){
-			if (STM.CH[2].CIR.B.CIF)
-			{
-				GPIO_SetState(LED_BAR_0 + j, 0);
-				GPIO_SetState(LED_DOWN, 1);
-				GPIO_SetState(LED_UP, 0);
-				STM.CH[2].CIR.B.CIF = 1;	/* Clear interrupt flag */
-				SWITCH_INTERR_FLAG = 1;
-				STM.CNT.R = 0; 				/*Reset counter*/
-				A_P_Con = 2;
-				j--;
+	if(e_wState == LIFTING)
+	{
+		while (SWITCH_INTERR_FLAG){
+			while(j >= 0){
+				if (STM.CH[2].CIR.B.CIF)
+				{
+					GPIO_SetState(LED_BAR_0 + j, 0);
+					GPIO_SetState(LED_DOWN, 1);
+					GPIO_SetState(LED_UP, 0);
+					STM.CH[2].CIR.B.CIF = 1;	/* Clear interrupt flag */
+					SWITCH_INTERR_FLAG = 1;
+					STM.CNT.R = 0; 				/*Reset counter*/
+					A_P_Con = 2;
+					j--;
+				}
 			}
 		}
+		blockButtons();
 	}
-	blockButtons();
 }

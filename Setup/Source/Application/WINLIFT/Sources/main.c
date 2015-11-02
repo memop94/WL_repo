@@ -43,7 +43,7 @@ int main(void) {
 	  
 	  su = GPIO_GetState(SW_UP);
 	  while (su == 1){
-		  WL_WinMUp();
+		  WL_WinAUp();
 		  su = GPIO_GetState(SW_UP);
 	  }
 	  

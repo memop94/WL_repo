@@ -41,6 +41,8 @@ T_ULONG countPressTime( )
 //This function disable all the buttons for 5 seconds
 void blockButtons()
 {
+	GPIO_SetState(LED_DOWN, 0);
+	
 	//disable buttons
 	SIU.PCR[66].B.IBE = 0;
 	SIU.PCR[67].B.IBE = 0;

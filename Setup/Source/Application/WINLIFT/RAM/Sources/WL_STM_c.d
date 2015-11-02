@@ -1,11 +1,11 @@
-Sources/WL_STM_c.obj: C:\Users\GuillermoFrancisco\workspace\Project\ 01\ -\ Window\ Lifter\Sources\WL_STM.c \
+Sources/WL_STM_c.obj: C:\Users\GuillermoFrancisco\workspace\WINLIFT\Sources\WL_STM.c \
 	C:\Freescale\CW\ MCU\ v10.6\MCU\PA_Support\ewl\EWL_C\include\lib_ewl.prefix \
 	C:\Freescale\CW\ MCU\ v10.6\MCU\PA_Support\ewl\EWL_C\include\common.prefix \
 	C:\Freescale\CW\ MCU\ v10.6\MCU\PA_Support\ewl\EWL_C\include\ewl_c_version.h \
-	C:\Users\GuillermoFrancisco\workspace\Project\ 01\ -\ Window\ Lifter\Prefix\MPC5606B_RAM_VLE.prefix \
-	C:\Users\GuillermoFrancisco\workspace\Project\ 01\ -\ Window\ Lifter\Project_Headers\WL_STM.h \
-	C:\Users\GuillermoFrancisco\workspace\Project\ 01\ -\ Window\ Lifter\Project_Headers\MPC5606B.h \
-	C:\Users\GuillermoFrancisco\workspace\Project\ 01\ -\ Window\ Lifter\Project_Headers\typedefs.h \
+	C:\Users\GuillermoFrancisco\workspace\WINLIFT\Prefix\MPC5606B_RAM_VLE.prefix \
+	C:\Users\GuillermoFrancisco\workspace\WINLIFT\Project_Headers\WL_STM.h \
+	C:\Users\GuillermoFrancisco\workspace\WINLIFT\Project_Headers\MPC5606B.h \
+	C:\Users\GuillermoFrancisco\workspace\WINLIFT\Project_Headers\typedefs.h \
 	C:\Freescale\CW\ MCU\ v10.6\MCU\PA_Support\ewl\EWL_C\include\stdint.h \
 	C:\Freescale\CW\ MCU\ v10.6\MCU\PA_Support\ewl\EWL_C\include\ansi_parms.h \
 	C:\Freescale\CW\ MCU\ v10.6\MCU\PA_Support\ewl\EWL_C\include\ewlGlobals.h \
@@ -14,7 +14,9 @@ Sources/WL_STM_c.obj: C:\Users\GuillermoFrancisco\workspace\Project\ 01\ -\ Wind
 	C:\Freescale\CW\ MCU\ v10.6\MCU\PA_Support\ewl\EWL_C\include\cstdint \
 	C:\Freescale\CW\ MCU\ v10.6\MCU\PA_Support\ewl\EWL_C\include\limits_api.h \
 	C:\Freescale\CW\ MCU\ v10.6\MCU\PA_Support\ewl\EWL_C\include\ewl_lib_ext1.h \
-	C:\Users\GuillermoFrancisco\workspace\Project\ 01\ -\ Window\ Lifter\Project_Headers\stdtypedef.h \
-	C:\Users\GuillermoFrancisco\workspace\Project\ 01\ -\ Window\ Lifter\Project_Headers\IntcInterrupts.h \
-	C:\Users\GuillermoFrancisco\workspace\Project\ 01\ -\ Window\ Lifter\Project_Headers\WL_FUNCTIONS.h \
-	C:\Users\GuillermoFrancisco\workspace\Project\ 01\ -\ Window\ Lifter\Project_Headers\driver_channel_MPC5606B.h 
+	C:\Users\GuillermoFrancisco\workspace\WINLIFT\Project_Headers\stdtypedef.h \
+	C:\Users\GuillermoFrancisco\workspace\WINLIFT\Project_Headers\IntcInterrupts.h \
+	C:\Users\GuillermoFrancisco\workspace\WINLIFT\Project_Headers\WL_FUNCTIONS.h \
+	C:\Users\GuillermoFrancisco\workspace\WINLIFT\Project_Headers\driver_channel_MPC5606B.h \
+	C:\Users\GuillermoFrancisco\workspace\WINLIFT\Project_Headers\WL_WinProcessing.h \
+	C:\Users\GuillermoFrancisco\workspace\WINLIFT\Project_Headers\GPIO_State.h 

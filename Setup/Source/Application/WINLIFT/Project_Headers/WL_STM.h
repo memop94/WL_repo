@@ -15,6 +15,8 @@
 #include "WL_FUNCTIONS.h"
 #include "WL_WinProcessing.h"
 
+void WL_SetState();
+
 void WL_STM_init(void);
 
 T_ULONG WL_CheckValid(void);

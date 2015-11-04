@@ -16,6 +16,11 @@ enum E_WINDOWSTATE {OPEN, CLOSE, LIFTING} e_wstate;
 volatile T_SWORD WindowPos = 0;
 int AntiPinchCon = 1;
 
+void WL_SetState()
+{
+	e_wstate = CLOSE;	
+}
+
 void WL_STM_init(void)
 {
     STM.CR.B.TEN        = 0x0;
@@ -136,11 +141,10 @@ void WL_WinMUp(void)
 	*  Return               :  void
 	*  -----------------------------------------------------------------------
 	*/
-
+	
 	if (STM.CH[2].CIR.B.CIF)
 	{
 		GPIO_SetState(LED_BAR_0 + WindowPos, 1);
-		GPIO_SetState(LED_UP, 1);
 		STM.CH[2].CIR.B.CIF = 1;	/* Clear interrupt flag */
 		STM.CNT.R = 0; 				/*Reset counter*/
 		WindowPos++;
@@ -152,14 +156,17 @@ void WL_WinMUp(void)
 		}
 		else
 		{	
-			/*DO NOTHING*/
+			GPIO_SetState(LED_UP, 1);
 		}
 	}
 	else
 	{
 		/*DO NOTHING*/
 	}
-	e_wstate = CLOSE;
+	if (WindowPos >= 9)
+	{
+		WindowPos = 9;
+	}
 }
 
 void WL_WinAUp(void)
@@ -188,6 +195,10 @@ void WL_WinAUp(void)
 		  /*DO NOTHING*/
 		}
 	}
+	if (WindowPos >= 9)
+	{
+		WindowPos = 9;
+	}
 	e_wstate = CLOSE;
 }
 
@@ -202,7 +213,8 @@ void WL_WinMDw(void)
 
 	if (STM.CH[2].CIR.B.CIF)
 	{
-		if (WindowPos <= 0)
+		GPIO_SetState(LED_BAR_0 + WindowPos, 0);
+		if (WindowPos < 1)
 		{
 			WindowPos = 0;
 			GPIO_SetState(LED_DOWN, 0);
@@ -211,7 +223,6 @@ void WL_WinMDw(void)
 		{
 			GPIO_SetState(LED_DOWN, 1);
 		}
-		GPIO_SetState(LED_BAR_0 + WindowPos, 0);
 		STM.CH[2].CIR.B.CIF = 1;	/* Clear interrupt flag */
 		STM.CNT.R = 0; 				/*Reset counter*/
 		WindowPos--;
@@ -257,9 +268,9 @@ void WL_A_Pinch(void)
 	*  Return               :  void
 	*  -----------------------------------------------------------------------
 	*/
-	if (e_wstate == LIFTING)
+	if (SWITCH_INTERR_FLAG)
 	{
-		while (SWITCH_INTERR_FLAG)
+		while (e_wstate == LIFTING)
 		{
 			while(WindowPos >= 0)
 			{
@@ -279,8 +290,8 @@ void WL_A_Pinch(void)
 				  /*DO NOTHING*/
 				}
 			}
-			e_wstate = OPEN;
 			blockButtons();
+			e_wstate = OPEN;
 		}
 	}
 	else

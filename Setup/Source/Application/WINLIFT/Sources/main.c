@@ -10,6 +10,9 @@
 #include "external_interrupts.h"
 #include "WL_WinProcessing.h"
 
+/*AUTO Y DESPUED MANUAL DEL INVERSO
+ *SE PRENDE EL LED ABAJO EN RESET*/
+
 int main(void) {
 	
 	volatile T_ULONG lul_InfLoop = 0;
@@ -124,6 +127,8 @@ int main(void) {
 	  GPIO_SetState(LED_UP, 0);
 	  
 	  lul_InfLoop++;
+	  
+	  WL_SetState();
   }
 }
 

@@ -28,7 +28,7 @@
 							<option id="com.freescale.ppc.toolchain.sharedoption.processor.173587869" superClass="com.freescale.ppc.toolchain.sharedoption.processor" value="com.freescale.ppc.toolchain.sharedoption.processor.zen" valueType="enumerated"/>
 							<option id="com.freescale.ppc.toolchain.sharedoption.sym.1868148095" superClass="com.freescale.ppc.toolchain.sharedoption.sym" value="true" valueType="boolean"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="com.freescale.ppc.toolchain.platform.478147262" name="PowerPC Target Platform" superClass="com.freescale.ppc.toolchain.platform"/>
-							<builder buildPath="${ProjDirPath}/RAM" errorParsers="org.eclipse.cdt.core.GmakeErrorParser;com.freescale.core.ide.cdt.errorParsers.MwErrorParser;com.freescale.core.ide.cdt.errorParsers.MPWErrorParser" id="com.freescale.ppc.toolchain.builder.1546906326" name="Make Builder.RAM" parallelBuildOn="true" parallelizationNumber="optimal" superClass="com.freescale.ppc.toolchain.builder"/>
+							<builder buildPath="${ProjDirPath}/RAM" errorParsers="org.eclipse.cdt.core.GmakeErrorParser;com.freescale.core.ide.cdt.errorParsers.MwErrorParser;com.freescale.core.ide.cdt.errorParsers.MPWErrorParser" id="com.freescale.ppc.toolchain.builder.1546906326" name="Make Builder.RAM" parallelBuildOn="true" parallelBuildWorkspaceOn="true" parallelizationNumber="optimal" superClass="com.freescale.ppc.toolchain.builder"/>
 							<tool errorParsers="" id="com.freescale.ppc.toolchain.linker.529201495" name="PowerPC Linker" superClass="com.freescale.ppc.toolchain.linker">
 								<option id="com.freescale.ppc.toolchain.linker.base.input.entrypoint.1133241274" superClass="com.freescale.ppc.toolchain.linker.base.input.entrypoint" value="__startup" valueType="string"/>
 								<option id="com.freescale.ppc.toolchain.linker.base.input.codeAddress.1501861119" superClass="com.freescale.ppc.toolchain.linker.base.input.codeAddress" value="0x2000" valueType="string"/>
@@ -82,7 +82,6 @@
 							<tool errorParsers="" id="com.freescale.ppc.toolchain.preprocessor.768603792" name="PowerPC Preprocessor" superClass="com.freescale.ppc.toolchain.preprocessor"/>
 						</toolChain>
 					</folderInfo>
-					<fileInfo id="com.freescale.ppc.debug.toolchain.configuration.807481855.MPC5606B_readme.txt" name="MPC5606B_readme.txt" rcbsApplicability="disable" resourcePath="MPC5606B_readme.txt" toolsToInvoke=""/>
 					<fileInfo id="com.freescale.ppc.debug.toolchain.configuration.807481855.PRC1_Sources/ivor_branch_table_p1.c" name="ivor_branch_table_p1.c" rcbsApplicability="disable" resourcePath="PRC1_Sources/ivor_branch_table_p1.c" toolsToInvoke="com.freescale.ppc.toolchain.compiler.1696317719.1636303116">
 						<tool errorParsers="" id="com.freescale.ppc.toolchain.compiler.1696317719.1636303116" name="PowerPC Compiler" superClass="com.freescale.ppc.toolchain.compiler.1696317719">
 							<inputType id="com.freescale.ppc.toolchain.compiler.base.input.707116589" name="com.freescale.ppc.toolchain.cf Compiler Input" superClass="com.freescale.ppc.toolchain.compiler.base.input"/>
@@ -113,6 +112,9 @@
 							<inputType id="com.freescale.ppc.toolchain.compiler.base.input.c++.552001511" name="com.freescale.ppc.toolchain.cf Compiler Input" superClass="com.freescale.ppc.toolchain.compiler.base.input.c++"/>
 						</tool>
 					</fileInfo>
+					<fileInfo id="com.freescale.ppc.debug.toolchain.configuration.807481855.MPC5606B_readme.txt" name="MPC5606B_readme.txt" rcbsApplicability="disable" resourcePath="MPC5606B_readme.txt" toolsToInvoke=""/>
+					<fileInfo id="com.freescale.ppc.debug.toolchain.configuration.807481855.Project_Headers/Exceptions_p1.h" name="Exceptions_p1.h" rcbsApplicability="disable" resourcePath="Project_Headers/Exceptions_p1.h" toolsToInvoke=""/>
+					<fileInfo id="com.freescale.ppc.debug.toolchain.configuration.807481855.Project_Headers/IntcInterrupts_p1.h" name="IntcInterrupts_p1.h" rcbsApplicability="disable" resourcePath="Project_Headers/IntcInterrupts_p1.h" toolsToInvoke=""/>
 					<fileInfo id="com.freescale.ppc.debug.toolchain.configuration.807481855.Project_Settings/Startup_Code/MPC5606B_init_flash.c" name="MPC5606B_init_flash.c" rcbsApplicability="disable" resourcePath="Project_Settings/Startup_Code/MPC5606B_init_flash.c" toolsToInvoke="com.freescale.ppc.toolchain.compiler.1696317719.1212850338">
 						<tool errorParsers="" id="com.freescale.ppc.toolchain.compiler.1696317719.1212850338" name="PowerPC Compiler" superClass="com.freescale.ppc.toolchain.compiler.1696317719">
 							<inputType id="com.freescale.ppc.toolchain.compiler.base.input.1205233933" name="com.freescale.ppc.toolchain.cf Compiler Input" superClass="com.freescale.ppc.toolchain.compiler.base.input"/>
@@ -120,8 +122,6 @@
 						</tool>
 					</fileInfo>
 					<fileInfo id="com.freescale.ppc.debug.toolchain.configuration.807481855.Project_Settings/Linker_Files/MPC5606B_FLASH.lcf" name="MPC5606B_FLASH.lcf" rcbsApplicability="disable" resourcePath="Project_Settings/Linker_Files/MPC5606B_FLASH.lcf" toolsToInvoke=""/>
-					<fileInfo id="com.freescale.ppc.debug.toolchain.configuration.807481855.Project_Headers/Exceptions_p1.h" name="Exceptions_p1.h" rcbsApplicability="disable" resourcePath="Project_Headers/Exceptions_p1.h" toolsToInvoke=""/>
-					<fileInfo id="com.freescale.ppc.debug.toolchain.configuration.807481855.Project_Headers/IntcInterrupts_p1.h" name="IntcInterrupts_p1.h" rcbsApplicability="disable" resourcePath="Project_Headers/IntcInterrupts_p1.h" toolsToInvoke=""/>
 					<fileInfo id="com.freescale.ppc.debug.toolchain.configuration.807481855.Prefix/MPC5606B_FLASH_VLE.prefix" name="MPC5606B_FLASH_VLE.prefix" rcbsApplicability="disable" resourcePath="Prefix/MPC5606B_FLASH_VLE.prefix" toolsToInvoke=""/>
 					<sourceEntries>
 						<entry excluding="Project_Settings/Linker_Files/MPC5606B_FLASH.lcf|Prefix/MPC5606B_FLASH_VLE.prefix|MPC5606B_readme.txt|Project_Settings/Startup_Code/MPC5606B_init_flash.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
@@ -155,7 +155,7 @@
 							<option id="com.freescale.ppc.toolchain.sharedoption.processor.261600573" superClass="com.freescale.ppc.toolchain.sharedoption.processor" value="com.freescale.ppc.toolchain.sharedoption.processor.zen" valueType="enumerated"/>
 							<option id="com.freescale.ppc.toolchain.sharedoption.sym.1626267225" superClass="com.freescale.ppc.toolchain.sharedoption.sym" value="true" valueType="boolean"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="com.freescale.ppc.toolchain.platform.799544841" name="PowerPC Target Platform" superClass="com.freescale.ppc.toolchain.platform"/>
-							<builder buildPath="${ProjDirPath}/FLASH" errorParsers="org.eclipse.cdt.core.GmakeErrorParser;com.freescale.core.ide.cdt.errorParsers.MwErrorParser;com.freescale.core.ide.cdt.errorParsers.MPWErrorParser" id="com.freescale.ppc.toolchain.builder.1698904897" name="Make Builder.FLASH" parallelBuildOn="true" parallelizationNumber="optimal" superClass="com.freescale.ppc.toolchain.builder"/>
+							<builder buildPath="${ProjDirPath}/FLASH" errorParsers="org.eclipse.cdt.core.GmakeErrorParser;com.freescale.core.ide.cdt.errorParsers.MwErrorParser;com.freescale.core.ide.cdt.errorParsers.MPWErrorParser" id="com.freescale.ppc.toolchain.builder.1698904897" name="Make Builder.FLASH" parallelBuildOn="true" parallelBuildWorkspaceOn="true" parallelizationNumber="optimal" superClass="com.freescale.ppc.toolchain.builder"/>
 							<tool errorParsers="" id="com.freescale.ppc.toolchain.linker.1741240805" name="PowerPC Linker" superClass="com.freescale.ppc.toolchain.linker">
 								<option id="com.freescale.ppc.toolchain.linker.base.input.entrypoint.1288584340" superClass="com.freescale.ppc.toolchain.linker.base.input.entrypoint" value="__startup" valueType="string"/>
 								<option id="com.freescale.ppc.toolchain.linker.base.input.codeAddress.1494490093" superClass="com.freescale.ppc.toolchain.linker.base.input.codeAddress" value="0x2000" valueType="string"/>
@@ -212,7 +212,6 @@
 							<tool errorParsers="" id="com.freescale.ppc.toolchain.preprocessor.1600726012" name="PowerPC Preprocessor" superClass="com.freescale.ppc.toolchain.preprocessor"/>
 						</toolChain>
 					</folderInfo>
-					<fileInfo id="com.freescale.ppc.debug.toolchain.configuration.1007136031.MPC5606B_readme.txt" name="MPC5606B_readme.txt" rcbsApplicability="disable" resourcePath="MPC5606B_readme.txt" toolsToInvoke=""/>
 					<fileInfo id="com.freescale.ppc.debug.toolchain.configuration.1007136031.PRC1_Sources/ivor_branch_table_p1.c" name="ivor_branch_table_p1.c" rcbsApplicability="disable" resourcePath="PRC1_Sources/ivor_branch_table_p1.c" toolsToInvoke="com.freescale.ppc.toolchain.compiler.1307965624.1963445527">
 						<tool errorParsers="" id="com.freescale.ppc.toolchain.compiler.1307965624.1963445527" name="PowerPC Compiler" superClass="com.freescale.ppc.toolchain.compiler.1307965624">
 							<inputType id="com.freescale.ppc.toolchain.compiler.base.input.175851193" name="com.freescale.ppc.toolchain.cf Compiler Input" superClass="com.freescale.ppc.toolchain.compiler.base.input"/>
@@ -243,6 +242,9 @@
 							<inputType id="com.freescale.ppc.toolchain.compiler.base.input.c++.797402640" name="com.freescale.ppc.toolchain.cf Compiler Input" superClass="com.freescale.ppc.toolchain.compiler.base.input.c++"/>
 						</tool>
 					</fileInfo>
+					<fileInfo id="com.freescale.ppc.debug.toolchain.configuration.1007136031.MPC5606B_readme.txt" name="MPC5606B_readme.txt" rcbsApplicability="disable" resourcePath="MPC5606B_readme.txt" toolsToInvoke=""/>
+					<fileInfo id="com.freescale.ppc.debug.toolchain.configuration.1007136031.Project_Headers/Exceptions_p1.h" name="Exceptions_p1.h" rcbsApplicability="disable" resourcePath="Project_Headers/Exceptions_p1.h" toolsToInvoke=""/>
+					<fileInfo id="com.freescale.ppc.debug.toolchain.configuration.1007136031.Project_Headers/IntcInterrupts_p1.h" name="IntcInterrupts_p1.h" rcbsApplicability="disable" resourcePath="Project_Headers/IntcInterrupts_p1.h" toolsToInvoke=""/>
 					<fileInfo id="com.freescale.ppc.debug.toolchain.configuration.1007136031.Project_Settings/Startup_Code/MPC5606B_init_ram.c" name="MPC5606B_init_ram.c" rcbsApplicability="disable" resourcePath="Project_Settings/Startup_Code/MPC5606B_init_ram.c" toolsToInvoke="com.freescale.ppc.toolchain.compiler.1307965624.2078765634">
 						<tool errorParsers="" id="com.freescale.ppc.toolchain.compiler.1307965624.2078765634" name="PowerPC Compiler" superClass="com.freescale.ppc.toolchain.compiler.1307965624">
 							<inputType id="com.freescale.ppc.toolchain.compiler.base.input.2127911546" name="com.freescale.ppc.toolchain.cf Compiler Input" superClass="com.freescale.ppc.toolchain.compiler.base.input"/>
@@ -250,8 +252,6 @@
 						</tool>
 					</fileInfo>
 					<fileInfo id="com.freescale.ppc.debug.toolchain.configuration.1007136031.Project_Settings/Linker_Files/MPC5606B_RAM.lcf" name="MPC5606B_RAM.lcf" rcbsApplicability="disable" resourcePath="Project_Settings/Linker_Files/MPC5606B_RAM.lcf" toolsToInvoke=""/>
-					<fileInfo id="com.freescale.ppc.debug.toolchain.configuration.1007136031.Project_Headers/Exceptions_p1.h" name="Exceptions_p1.h" rcbsApplicability="disable" resourcePath="Project_Headers/Exceptions_p1.h" toolsToInvoke=""/>
-					<fileInfo id="com.freescale.ppc.debug.toolchain.configuration.1007136031.Project_Headers/IntcInterrupts_p1.h" name="IntcInterrupts_p1.h" rcbsApplicability="disable" resourcePath="Project_Headers/IntcInterrupts_p1.h" toolsToInvoke=""/>
 					<fileInfo id="com.freescale.ppc.debug.toolchain.configuration.1007136031.Prefix/MPC5606B_RAM_VLE.prefix" name="MPC5606B_RAM_VLE.prefix" rcbsApplicability="disable" resourcePath="Prefix/MPC5606B_RAM_VLE.prefix" toolsToInvoke=""/>
 					<sourceEntries>
 						<entry excluding="Project_Settings/Startup_Code/MPC5606B_init_ram.c|Project_Settings/Linker_Files/MPC5606B_RAM.lcf|Prefix/MPC5606B_RAM_VLE.prefix|MPC5606B_readme.txt" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>

@@ -59,7 +59,8 @@
 
 /* Constants and types */
 /*============================================================================*/
-
+#define VALID 1
+#define INVALID 0
 
 /* The new tasks must be defined here */
 extern enum{

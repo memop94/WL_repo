@@ -12,10 +12,8 @@
 /*============================================================================*/
 /* DESCRIPTION :                                                              */
 /** \file
-    short description in one sentence end with dot.
-    detailed
-    multiline
-    description of the file
+    THIS FILE CONTAINS THE FUNCTIONS THAT ARE DIRECTLY RELATED WITH THE 
+    FUNCTIONALITIES OF THE WINDOW LIFTER.
 */
 /*============================================================================*/
 /* COPYRIGHT (C) CONTINENTAL AUTOMOTIVE 2014                                  */
@@ -77,56 +75,68 @@ static T_UBYTE lub_ValidMA = 0;
 
 /* Private functions */
 /*============================================================================*/
+
 T_ULONG WL_CheckValid(T_UBYTE channel)
 {  /* ------------------------------------------------------------------------
 	*  Name                 :  	WL_CheckValid  
-	*  Description          :  	Check if counter has reached 10 clock tick of
-	*  							the scheduler
-	*  Parameters           :  	void 
-	*  Return               :  	void
+	*  Description          :  	As long as a button is press, check if the button 
+	*  							press is valid (to avoid debounce), the button  
+	*  							verified is the one specified in channel. If it 
+	*  							have not reached yet increase the lul_ValidTime 
+	*  							by one, every time that the function is called, 
+	*  							and returns a invalid value in the lub_Valid 
+	*  							variable. When the counter reach 10, lub_Valid 
+	*  							return a valid value
+	*  Parameters           :  	T_UBYTE 
+	*  Return               :  	T_ULONG
 	*  -----------------------------------------------------------------------
 	*/
 	static T_UBYTE lub_Valid = 0;
 	
-	if(GPIO_GetState(channel) == 1)
+	if(GPIO_GetState(channel) != OFF)
 	{
-		if (lul_ValidTime >= 10)
+		if (lul_ValidTime >= VALID_TIME)
 		{
-			lub_Valid = 1;
+			lub_Valid = VALID;
 			lul_ValidTime = 0;
 		}
 		else
 		{
 			lul_ValidTime++;
-			lub_Valid = 0;
+			lub_Valid = INVALID;
 		}
 	}
 	else{};
 	
-
 	return lub_Valid;
 }
 
 T_ULONG WL_CheckAutoManual(T_UBYTE channel)
 {  /* ------------------------------------------------------------------------
 	*  Name                 :  	WL_CheckAutoManual
-	*  Description          :  	Check if the movement will be Auto or Manual
-	*  						   	lub_Valid return 0 if AUTO, 1 if manual
-	*  Parameters           :  	void 
-	*  Return               :  	void
+	*  Description          :  	As long as a button is press, and it has been 
+	*  							validated, check if the routine to execute is   
+	*  							manual or automatic, this will be for the
+	*  							movement specified in channel (Up or Down). 
+	*  							If the counter (lul_PressTime) donot reached 490 
+	*  							counts (which will be 500 when the 10 in WL_CheckValid()
+	*  							are counted) is AUTO. But if the counter (lul_PressTime)
+	*  							reached 490 counts it will be manual.
+	*  Parameters           :  	T_UBYTE 
+	*  Return               :  	T_ULONG
 	*  -----------------------------------------------------------------------
 	*/
 	
-	if (GPIO_GetState(channel) == 1 && lub_ValidMA == 0)
+	if (GPIO_GetState(channel) != OFF && lub_ValidMA == AUTO)
 	{
-		if (lul_PressTime >= 490)
+		if (lul_PressTime >= MANUAL_TIME)
 			{
-				lub_ValidMA = 1;
+				lub_ValidMA = MANUAL;
 				lul_PressTime = 0;
 			}
 		else
 			{
-				lub_ValidMA = 0;
+				lub_ValidMA = AUTO;
 				lul_PressTime++;
 			}
 	}
@@ -135,30 +145,41 @@ T_ULONG WL_CheckAutoManual(T_UBYTE channel)
 
 void WL_WinMUp(void)
 {  /* ------------------------------------------------------------------------
-	*  Name                 :  WL_WinMUp
-	*  Description          :  Open the window manually
-	*  Parameters           :  void 
-	*  Return               :  void
+	*  Name                 :  	WL_WinMUp
+	*  Description          :  	Close the window manually by making a "sweep" 
+	*  							through the LED_BAR, as long as rsw_WindowPos
+	*  							is bigger than NUMLEDS, which means that the window
+	*  							is not completely close yet. As long as the SW_UP
+	*  							button is pressed the sweep will turn on a LED 
+	*  							every 400 counts of lul_TimeCounterUp. Once it reaches
+	*  							400 the counter is reseted and rsw_WindowPos increase by 
+	*  							one, to turn on a different LED the next time.
+	*  							While the button is pressed, state_flag, will be E_MANUAL_UP,
+	*  							but when is completely close, or the button is not pressed any
+	*  							more, state_flag will be E_DEFAULT.
+	*  Parameters           :  	void 
+	*  Return               :  	void
 	*  -----------------------------------------------------------------------
 	*/
 	if (rsw_WindowPos > NUMLEDS)
 	{
 		rsw_WindowPos = NUMLEDS;
-		GPIO_SetState(LED_UP, 0);
+		GPIO_SetState(LED_UP, OFF);
 		state_flag = E_DEFAULT;
 	}
 	
 	else
 	{
-		if (GPIO_GetState(SW_UP)){
-			if (lul_TimeCounterUp >= 400)
+		if (GPIO_GetState(SW_UP) != OFF)
+		{
+			if (lul_TimeCounterUp == TRANSITION_TIME)
 			{
-				GPIO_SetState(LED_BAR_0 + rsw_WindowPos, 1);
+				GPIO_SetState(LED_BAR_0 + rsw_WindowPos, ON);
 				if (rsw_WindowPos < NUMLEDS){
-					GPIO_SetState(LED_UP, 1);
+					GPIO_SetState(LED_UP, ON);
 				}
 				else{}
-				lul_TimeCounterUp = 1;
+				lul_TimeCounterUp = 0;
 				rsw_WindowPos++;
 			}
 			else
@@ -176,32 +197,40 @@ void WL_WinMUp(void)
 
 void WL_WinAUp(void)
 {  /* ------------------------------------------------------------------------
-	*  Name                 :  WL_WinMUp
-	*  Description          :  Open the window manually
-	*  Parameters           :  void 
-	*  Return               :  void
+	*  Name                 :  	WL_WinMUp
+	*  Description          :  	Close the window automatically by making a "sweep" 
+	*  							through the LED_BAR, as long as rsw_WindowPos
+	*  							is bigger than NUMLEDS, which means that the window
+	*  							is not completely close yet. It will turn on a LED 
+	*  							every 400 counts of lul_TimeCounterUp. Once it reaches
+	*  							400 the counter is reseted and rsw_WindowPos increase by 
+	*  							one, to turn on a different LED the next time.
+	*  							While the window is not close yet, state_flag, will be E_MANUAL_UP,
+	*  							but when is completely close, state_flag will be E_DEFAULT.
+	*  Parameters           :  	void 
+	*  Return               :  	void
 	*  -----------------------------------------------------------------------
 	*/
 	if (rsw_WindowPos > NUMLEDS)
 	{
 		state_flag = E_DEFAULT;
 		rsw_WindowPos = NUMLEDS;
-		GPIO_SetState(LED_UP, 0);
+		GPIO_SetState(LED_UP, OFF);
 	}
 	else
 	{
-		if (lul_TimeCounterUp >= 400)
+		if (lul_TimeCounterUp >= TRANSITION_TIME)
 		{
 			GPIO_SetState(LED_BAR_0 + rsw_WindowPos, 1);
 			if (rsw_WindowPos <= NUMLEDS)
 			{
-				GPIO_SetState(LED_UP, 1);
+				GPIO_SetState(LED_UP, ON);
 			}
 			else
 			{
 				/*DO NOTHING*/
 			}
-			lul_TimeCounterUp = 1;
+			lul_TimeCounterUp = 0;
 			rsw_WindowPos++;
 		}
 		else
@@ -213,29 +242,39 @@ void WL_WinAUp(void)
 
 void WL_WinMDw(void)
 {  /* ------------------------------------------------------------------------
-	*  Name                 :  WL_WinMUp
-	*  Description          :  Open the window manually
-	*  Parameters           :  void 
-	*  Return               :  void
+	*  Name                 :  	WL_WinMUp
+	*  Description          :  	Open the window manually by making a "sweep" 
+	*  							through the LED_BAR, as long as rsw_WindowPos
+	*  							is minor than NUMLEDS, which means that the window
+	*  							is not completely open yet. As long as the SW_DOWN
+	*  							button is pressed the sweep will turn off a LED 
+	*  							every 400 counts of lul_TimeCounterDw. Once it reaches
+	*  							400 the counter is reseted and rsw_WindowPos decrease by 
+	*  							one, to turn off a different LED the next time.
+	*  							While the button is pressed, state_flag, will be E_MANUAL_DW,
+	*  							but when is completely open, or the button is not pressed any
+	*  							more, state_flag will be E_DEFAULT.
+	*  Parameters           :  	void 
+	*  Return               :  	void
 	*  -----------------------------------------------------------------------
 	*/
 	if (rsw_WindowPos < 0)
 	{
 		rsw_WindowPos = 0;
-		GPIO_SetState(LED_DOWN, 0);
+		GPIO_SetState(LED_DOWN, OFF);
 		state_flag = E_DEFAULT;
 	}
 	else
 	{
 		if (GPIO_GetState(SW_DOWN)){
-			if (lul_TimeCounterDw >= 400)
+			if (lul_TimeCounterDw >= TRANSITION_TIME)
 			{
-					GPIO_SetState(LED_BAR_0 + rsw_WindowPos, 0);
+					GPIO_SetState(LED_BAR_0 + rsw_WindowPos, OFF);
 					if (rsw_WindowPos >= 0){
-						GPIO_SetState(LED_DOWN, 1);
+						GPIO_SetState(LED_DOWN, ON);
 					}
 					else{}
-					lul_TimeCounterDw = 1;
+					lul_TimeCounterDw = 0;
 					rsw_WindowPos--;
 			}
 			else
@@ -253,28 +292,36 @@ void WL_WinMDw(void)
 
 void WL_WinADw(void)
 {  /* ------------------------------------------------------------------------
-	*  Name                 :  WL_WinMUp
-	*  Description          :  Open the window manually
-	*  Parameters           :  void 
-	*  Return               :  void
+	*  Name                 : 	WL_WinMUp
+	*  Description          :  	Open the window automatically by making a "sweep" 
+	*  							through the LED_BAR, as long as rsw_WindowPos
+	*  							is minor than NUMLEDS, which means that the window
+	*  							is not completely open yet. It will turn on a LED 
+	*  							every 400 counts of lul_TimeCounterDw. Once it reaches
+	*  							400 the counter is reseted and rsw_WindowPos decrease by 
+	*  							one, to turn off a different LED the next time.
+	*  							While the window is not open yet, state_flag, will be E_MANUAL_DW,
+	*  							but when is completely open, state_flag will be E_DEFAULT.
+	*  Parameters           :  	void 
+	*  Return               :  	void
 	*  -----------------------------------------------------------------------
 	*/
 	if (rsw_WindowPos < 0)
 	{
 		state_flag = E_DEFAULT;
 		rsw_WindowPos = 0;
-		GPIO_SetState(LED_DOWN, 0);
+		GPIO_SetState(LED_DOWN, OFF);
 	}
 	else
 	{
-		if (lul_TimeCounterDw >= 400)
+		if (lul_TimeCounterDw >= TRANSITION_TIME)
 		{
-			GPIO_SetState(LED_BAR_0 + rsw_WindowPos, 0);
+			GPIO_SetState(LED_BAR_0 + rsw_WindowPos, OFF);
 			if (rsw_WindowPos >= 0){
-				GPIO_SetState(LED_DOWN, 1);
+				GPIO_SetState(LED_DOWN, ON);
 			}
 			else{}
-			lul_TimeCounterDw = 1;
+			lul_TimeCounterDw = 0;
 			rsw_WindowPos--;
 		}
 		else
@@ -286,13 +333,17 @@ void WL_WinADw(void)
 
 void WL_A_Pinch(void)
 {  /* ------------------------------------------------------------------------
-	*  Name                 :  WL_WinMUp
-	*  Description          :  Open the window manually
-	*  Parameters           :  void 
-	*  Return               :  void
+	*  Name                 :  	WL_WinMUp
+	*  Description          :  	This function can only be called when the window is
+	*  							going up, it ensures that the LED_UP is turned off.
+	*  							Then open the window automatically using WL_WinADw, when 
+	*  							the window is completely open calls the blockButtons
+	*  							function.
+	*  Parameters           :  	void 
+	*  Return               :  	void
 	*  -----------------------------------------------------------------------
 	*/
-	GPIO_SetState(LED_UP, 0);
+	GPIO_SetState(LED_UP, OFF);
 	if(rsw_WindowPos >= 0)
 	{
 		WL_WinADw();
@@ -304,20 +355,26 @@ void WL_A_Pinch(void)
 
 void blockButtons()
 {
-	GPIO_SetState(LED_DOWN, 0);
+	/* ------------------------------------------------------------------------
+	*  Name                 :  	blockButtons
+	*  Description          :  	Disable the inputs buttons and creates and wait 5s
+	*  							before re-enable them. Every time the function is called
+	*  							lul_Counter will increase by one, if it has not reached
+	*  							5s (or 5000 counts) state_flag will be E_ANTIPINCH. When
+	*  							it reached the 5s the buttons re-enable and state_flag changes
+	*  							to E_DEFAULT.
+	*  Parameters           :  	void 
+	*  Return               :  	void
+	*  -----------------------------------------------------------------------
+	*/
+	static T_ULONG lul_Counter = 0;
+	GPIO_SetState(LED_DOWN, OFF);
 	
 	//disable buttons
-	GPIO_En(SW_UP,  0x0000); 	 /* disable pin of SW2	*/
-	GPIO_En(SW_DOWN,  0x0000); 	 /* disable pin of SW1  */
+	GPIO_En(SW_UP,  DISABLE); 	 /* disable pin of SW2	*/
+	GPIO_En(SW_DOWN,  DISABLE); 	 /* disable pin of SW1  */
 	
-	wait5seconds();
-}
-
-void wait5seconds()
-{
-	static T_ULONG lul_Counter = 0;
-	
-	if (lul_Counter <= 5000){
+	if (lul_Counter <= STAND_BY_TIME){
 		state_flag = E_ANTIPINCH;
 		lul_Counter++;
 	}
@@ -325,8 +382,8 @@ void wait5seconds()
 		lul_Counter = 0;
 		
 		//enable buttons
-		GPIO_En(SW_UP,  0x0100); 	 /* enable pin of SW2	*/
-		GPIO_En(SW_DOWN,  0x0100); 	 /* enable pin of SW1  */
+		GPIO_En(SW_UP,  ENABLE); 	 /* enable pin of SW2	*/
+		GPIO_En(SW_DOWN,  ENABLE); 	 /* enable pin of SW1  	*/
 		
 		state_flag = E_DEFAULT;
 	}
@@ -336,5 +393,4 @@ void wait5seconds()
 /*============================================================================*/
 
 
-
- /* Notice: the file ends with a blank new line to avoid compiler warnings */
+/* Notice: the file ends with a blank new line to avoid compiler warnings */

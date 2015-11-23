@@ -11,11 +11,17 @@
  */
 /*============================================================================*/
 /* DESCRIPTION :                                                              */
-/** \file
-    short description in one sentence end with dot.
-    detailed
-    multiline
-    description of the file
+/** The scheduler is contained inside a function called kernel, this function is in 
+* TASK_Init.c. This function starts by doing an indexing of the task, assigning the 
+* offset. This process occurs only once in each execution of the code.
+* Then an infinite loop starts, the tick of the scheduler is defined by a flag called 
+* ub_TickFlag, which was configured to raise every millisecond. Once it was acquired it is
+* restarted to zero. 
+* Now, inside the if there is a for cycle which who through all the task accessing to their
+* offset with and if, whenever the offset is over zero it will decrease, for every task. 
+* When one of the offset, of whichever task, reach zero, the else of the if will be active 
+* and will stablish the period of the task and will call it using the pointer previously defined.
+
 */
 /*============================================================================*/
 /* COPYRIGHT (C) CONTINENTAL AUTOMOTIVE 2014                                  */
@@ -70,6 +76,25 @@ extern const S_TASK cas_TaskList[E_TASK_NUM];
 /*============================================================================*/
 /* ---------------------------- DO NOT MODIFIED ----------------------------- */
 void kernel (void){
+	/* ------------------------------------------------------------------------
+	 *  Name                 :	kernel
+	 *  Description          :  This function starts by doing an indexing of the 
+	 *  						task, assigning the offset. This process occurs 
+	 *  						only once in each execution of the code.
+	 *							Then an infinite loop starts, the tick of the 
+	 *							scheduler is defined by a flag called ub_TickFlag, 
+	 *							which was configured to raise every millisecond. 
+	 *							Once it was acquired it is restarted to zero. 
+	 *							Now, inside the if there is a for cycle which who 
+	 *							through all the task accessing to their offset with 
+	 *							and if, whenever the offset is over zero it will 
+	 *							decrease, for every task. When one of the offset, 
+	 *							of whichever task, reach zero, the else of the if 
+	 *							will be active and will stablish the period of the 
+	 *							task and will call it using the pointer previously defined. 
+	 *  Parameters           :  void
+	 *  Return               :  void
+	 *  -----------------------------------------------------------------------*/
 	for (rul_Index = 0; rul_Index < E_TASK_NUM; rul_Index ++){
 		raul_NTask[rul_Index] = cas_TaskList[rul_Index].rul_Offset;
 	}
@@ -87,6 +112,7 @@ void kernel (void){
 					}
 				}
 			}
+			else{}
 		}
 	
 /* ---------------------------- DO NOT MODIFIED ----------------------------- */

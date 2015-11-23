@@ -5,17 +5,16 @@
 /*============================================================================*/
 /*!
  * $Source: State_Machine.c $
- * $Revision: 1 $
+ * $Revision: 2 $
  * $Author: Guillermo Ramirez $
  * $Date: 19/11/2015 $
  */
 /*============================================================================*/
 /* DESCRIPTION :                                                              */
 /** \file
-    short description in one sentence end with dot.
-    detailed
-    multiline
-    description of the file
+    THIS FILE CONTAINS ONLY THE STATE MACHINE. THIS STATE MACHINE IS THE ONE IN
+    CHARGE OF THE WINDOW MOVEMENT. IT CALL THE FUNCTION THAT DIRECTLY CHANGE THE
+    STATE OF THE WINDOW
 */
 /*============================================================================*/
 /* COPYRIGHT (C) CONTINENTAL AUTOMOTIVE 2014                                  */
@@ -34,7 +33,7 @@
 /*============================================================================*/
 /*  DATABASE           |        PROJECT     | FILE VERSION (AND INSTANCE)     */
 /*----------------------------------------------------------------------------*/
-/*                     |                    |                                 */
+/*                     |   Window Lifter    |       	   2	              */
 /*============================================================================*/
 /*                               OBJECT HISTORY                               */
 /*============================================================================*/
@@ -61,7 +60,17 @@ T_UBYTE state_flag = E_DEFAULT;
 
 /* Private functions */
 /*============================================================================*/
-void StateMachine (void){
+void StateMachine (void)
+{  /* ------------------------------------------------------------------------
+	*  Name                 :  	StateMachine  
+	*  Description          :  	It calls a different state, or window movement case, 
+	*  							depending on the value of state_flag, which is
+	*  							establish by the tasks in the Scheduler.  							
+	*  Parameters           :  	void 
+	*  Return               :  	void
+	*  -----------------------------------------------------------------------
+	*/
+	
 	switch(state_flag){
 	
 		case E_MANUAL_UP :

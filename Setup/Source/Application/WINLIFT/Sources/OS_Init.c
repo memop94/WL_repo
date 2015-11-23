@@ -64,7 +64,7 @@ T_UBYTE ub_TickFlag;
 void Tick_Flag(void)
 {  /* --------------------------------------------------------------------------
 	*  Name                 :  Tick_Flag
-	*  Description          :  Check if the channel 0 of the STM as reached 10ms
+	*  Description          :  Check if the channel 0 of the STM as reached 1ms
 	*  						   and raise a flag when reached
 	*  Parameters           :  void 
 	*  Return               :  void

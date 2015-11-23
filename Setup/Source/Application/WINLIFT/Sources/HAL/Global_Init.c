@@ -11,11 +11,7 @@
  */
 /*============================================================================*/
 /* DESCRIPTION :                                                              */
-/** \file
-    short description in one sentence end with dot.
-    detailed
-    multiline
-    description of the file
+/** This file initialize all the resources needed for the project
 */
 /*============================================================================*/
 /* COPYRIGHT (C) CONTINENTAL AUTOMOTIVE 2014                                  */
@@ -52,16 +48,8 @@
 /* Constants and types  */
 /*============================================================================*/
 #define SWITCH_INTERR_FLAG SIU.ISR.B.EIF21
-/* 10 miliseconds in a frequency of 16MHz*/
-#define T10MS 0x9C400
-/*400 miliseconds in a frequency of 16MHz*/
-#define T400MS 0x186A000
-/*500 miliseconds in a frequency of 16MHz*/
-#define T500MS 0x1E84800
-/*10 miliseconds in a frequency of 16MHz*/
+/*1 miliseconds in a frequency of 16MHz*/
 #define T1MS 0xFA00
-/*Number of Leds, note that it is counted from 0 to 9: ten elements*/
-#define NUMLEDS 9
 
 
 /* Variables */
@@ -77,13 +65,7 @@
 /*============================================================================*/
 
 
-
-
 /* Private functions */
-/*============================================================================*/
-
-
-/* Exported functions */
 /*============================================================================*/
 void Global_Init(void)
 {
@@ -100,10 +82,6 @@ void Global_Init(void)
 	INTC_init();
 }
 
-void INTC_init(void){
-	INTC.CPR.R = 0;
-}
-
 void STM_init(void)
 {
 	/* --------------------------------------------------------------------------
@@ -117,7 +95,7 @@ void STM_init(void)
     STM.CR.B.FRZ        = 0x1;
     STM.CR.B.CPS        = 0;        /* Configure Counter Prescaler, Counter Prescaler is 1     */
         
-    STM.CH[0].CMP.R     = 0xFA00;   	/* Compare with 640KHz = 10 msec*/      
+    STM.CH[0].CMP.R     = T1MS;  	/* 64KHz = 1 msec*/      
     STM.CH[0].CCR.B.CEN = 0x1;      /* System Timer Channel 0: ENABLE                          */
 
     STM.CR.B.TEN        = 0x1;      /* Enable System Timer Module                              */
@@ -125,6 +103,13 @@ void STM_init(void)
 
 void initModesAndClock(void) 
 {
+	/* --------------------------------------------------------------------------
+	*  Name                 :  initModesAndClock
+	*  Description          :  Initialize the modes and clocks of the MPC5606B
+	*  Parameters           :  void 
+	*  Return               :  void
+	*  -------------------------------------------------------------------------
+	*/
   	ME.MER.R = 0x0000001D;               /* Enable DRUN, RUN0, SAFE, RESET modes              */
     
   	/* Initialize PLL before turning it on:              */
@@ -191,5 +176,19 @@ void GPIO_En(T_SWORD lsw_ch, T_UWORD luw_state)
 	 
 	SIU.PCR[lsw_ch].R = luw_state;				
 }
+
+void INTC_init(void){
+	/* ------------------------------------------------------------------------
+	 *  Name                 :	GPIO_Init
+	 *  Description          :  Activates the use of interruptions
+	 *  Parameters           :  void
+	 *  Return               :  void
+	 *  -----------------------------------------------------------------------*/
+	INTC.CPR.R = 0;
+}
+
+/* Exported functions */
+/*============================================================================*/
+
 
  /* Notice: the file ends with a blank new line to avoid compiler warnings */

@@ -11,11 +11,7 @@
  */
 /*============================================================================*/
 /* DESCRIPTION :                                                              */
-/** \file
-    Main file that calls the scheduler and its other functions.
-    detailed
-    multiline
-    description of the file
+/** Main file that calls the scheduler.
 */
 /*============================================================================*/
 /* COPYRIGHT (C) CONTINENTAL AUTOMOTIVE 2014                                  */

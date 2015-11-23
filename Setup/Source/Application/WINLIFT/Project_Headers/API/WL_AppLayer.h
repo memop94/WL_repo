@@ -54,14 +54,23 @@
 
 /* Constants and types */
 /*============================================================================*/
-#define SWITCH_INTERR_FLAG SIU.ISR.B.EIF21
-/* 10 miliseconds in a frequency of 16MHz*/
-#define T10MS 0x9C400
-/*400 miliseconds in a frequency of 16MHz*/
-#define T400MS 0x186A000
-/*500 miliseconds in a frequency of 16MHz*/
-#define T500MS 0x1E84800
-/*Number of Leds, note that it is counted from 0 to 9: ten elements*/
+#define VALID 1
+#define INVALID 0
+
+#define MANUAL 1
+#define AUTO 0
+
+#define ON 1
+#define OFF 0
+
+#define VALID_TIME 10
+#define MANUAL_TIME 490
+#define TRANSITION_TIME 400
+#define STAND_BY_TIME 5000
+
+#define DISABLE 0x0000
+#define ENABLE 0X0100
+
 #define NUMLEDS 9
 
 /* Exported Variables */
@@ -80,7 +89,6 @@ void WL_WinADw(void);
 
 void WL_A_Pinch(void);
 
-void blockButtons(); 
-void wait5seconds(); 
+void blockButtons();
 
 #endif  /* Notice: the file ends with a blank new line to avoid compiler warnings */

@@ -11,11 +11,8 @@
  */
 /*============================================================================*/
 /* DESCRIPTION :                                                              */
-/** \file
-    short description in one sentence end with dot.
-    detailed
-    multiline
-    description of the file
+/** This file contains the function that directly interact with the pins, to 
+ * read their status or to write it.
 */
 /*============================================================================*/
 /* COPYRIGHT (C) CONTINENTAL AUTOMOTIVE 2014                                  */
@@ -64,48 +61,40 @@
 
 /* Inline functions */
 /*============================================================================*/
-void LED_TOGGLE(T_UWORD ch)
-{
-		SIU.GPDO[ch].B.PDO ^= 1;
-}
-
-uint8_t GPIO_GetState (uint16_t ch)
-{
-    uint8_t result;
-
-    result = (uint8_t)SIU.GPDI[ch].B.PDI;
-
-    return(result);
-}
-
-void GPIO_SetState (uint16_t ch, uint8_t value)
-{
-    SIU.GPDO[ch].B.PDO = value;
-}
-
 
 
 /* Private functions */
 /*============================================================================*/
 
-/** Check if action is allowed by overload protection.
- To avoid overheating of the door locking motors and hardware failure
- the software shall limit the number of activations in a short period.
- This function checks if the limitation algorithm allows or not
- a certain activation of the motors.
- \returns TRUE if the activation is allowed, FALSE if not
-
-uint8 algreqg_olp_CheckOLPAllow(uint8 ReqestedAction_u8,       /**< the requested action to be performed (e.g. unlock) 
-                                uint16 RequestedComponent_u16  /**< the mask of the doors which motors to be activated (e.g. front doors) 
-                                )
-{
-	return 0;
-}
-*/
 
 /* Exported functions */
 /*============================================================================*/
+T_UBYTE GPIO_GetState (T_UWORD ch)
+{
+	/* --------------------------------------------------------------------------
+	*  Name                 :  GPIO_GetState
+	*  Description          :  Get the state of a pin, the pin is defined in ch
+	*  Parameters           :  T_UWORD 
+	*  Return               :  void
+	*  -------------------------------------------------------------------------
+	*/
+	T_UBYTE result;
 
+    result = (T_UBYTE)SIU.GPDI[ch].B.PDI;
+
+    return(result);
+}
+
+void GPIO_SetState (T_UWORD ch, T_UBYTE value)
+{/* --------------------------------------------------------------------------
+	*  Name                 :  GPIO_SetState
+	*  Description          :  Set the value received to the pin specified in ch
+	*  Parameters           :  T_UWORD, T_UBYTE
+	*  Return               :  void
+	*  -------------------------------------------------------------------------
+	*/
+    SIU.GPDO[ch].B.PDO = value;
+}
 
 
  /* Notice: the file ends with a blank new line to avoid compiler warnings */

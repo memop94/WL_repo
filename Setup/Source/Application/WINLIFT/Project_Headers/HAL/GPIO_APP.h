@@ -60,7 +60,6 @@
 
 /* Exported functions prototypes */
 /*============================================================================*/
-void LED_TOGGLE(T_UWORD);
 uint8_t GPIO_GetState (uint16_t);
 void GPIO_SetState (uint16_t ch, uint8_t value);
 
